@@ -88,8 +88,10 @@ with tf.device('/gpu:%d' % gpu_id):
     a2b_sample_dis = models.discriminator(a2b_sample, 'b', reuse=True, df_dim=features)
 
     # losses
+
     g_loss_a2b = tf.identity(ops.l2_loss(a2b_dis, tf.ones_like(a2b_dis)), name='g_loss_a2b')
     g_loss_b2a = tf.identity(ops.l2_loss(b2a_dis, tf.ones_like(b2a_dis)), name='g_loss_b2a')
+
     cyc_loss_a = tf.identity(ops.l1_loss(a_real, a2b2a) * 10.0, name='cyc_loss_a')
     cyc_loss_b = tf.identity(ops.l1_loss(b_real, b2a2b) * 10.0, name='cyc_loss_b')
     g_loss = g_loss_a2b + g_loss_b2a + cyc_loss_a + cyc_loss_b
